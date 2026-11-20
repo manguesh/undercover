@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ClaimView } from "./ClaimView";
 import { Instructions } from "./Instructions";
 import { Queue } from "./Queue";
 
@@ -14,6 +15,13 @@ function useHash() {
     };
   }, []);
   return hash;
+}
+
+function View({ hash }: Readonly<{ hash: string }>) {
+  const claimId = /^#\/claims\/(.+)$/.exec(hash)?.[1];
+  if (claimId) return <ClaimView key={claimId} claimId={claimId} />;
+  if (hash === "#/instructions") return <Instructions />;
+  return <Queue />;
 }
 
 export function App() {
@@ -39,7 +47,9 @@ export function App() {
           </a>
         </nav>
       </header>
-      <main>{onInstructions ? <Instructions /> : <Queue />}</main>
+      <main>
+        <View hash={hash} />
+      </main>
     </>
   );
 }

@@ -1,6 +1,6 @@
 # Status
 
-The claims pilot is being built to `docs/PLAN.md`. Phases 1 to 4 of 6 are done.
+The claims pilot is being built to `docs/PLAN.md`. Phases 1 to 5 of 6 are done.
 
 ## Built
 
@@ -11,8 +11,8 @@ The claims pilot is being built to `docs/PLAN.md`. Phases 1 to 4 of 6 are done.
   - Claim states: `waiting`, `in_progress`, `awaiting_signoff` and `decided`. An approval over the $1,000 limit in `data/company.json` waits for sign-off, and `pay_claim` refuses it (403) until a handler signs off. Signing off records the payment.
 - `agent/`: the UnderCover Agent. `run(claim_id, thread_id)` reads its instructions from `get_instructions`, then decides the claim with tools that call the API: `get_claim`, `get_policy`, `get_customer`, `get_policy_wording`, `record_decision` and `pay_claim`. Each tool call, tool result and reply is recorded as a step. A refusal from the API comes back to the model as the tool's result. The model is `openai/gpt-6-luna` on OpenRouter, or `MODEL_NAME` if set.
 - `agent/instructions.md`: the agent's instructions.
-- `dashboard/`: React, in UnderCover's brand, with light and dark mode. The queue (every claim with its state, decision and payout, a count by state, and a "Work the queue" button) refreshes every two seconds. The instructions page shows the agent's instructions, read only. Views are switched by the URL hash.
-- `e2e/`: Playwright tests of the queue and the instructions. Playwright starts its own backend on port 8001, with a fresh database in the system temp folder, and its own dashboard on port 5174, so it never touches the dev servers or their data.
+- `dashboard/`: React, in UnderCover's brand, with light and dark mode. The queue (every claim with its state, decision and payout, a count by state, and a "Work the queue" button) refreshes every two seconds. The claim page shows the claim in full (story, items, documents, policy and the customer's earlier claims), the decision with its reasons and policy section, the payment, and the agent's steps, refreshed every two seconds. It has a "Run the agent" button on a waiting claim, and a handler picker with "Sign off and pay" on a claim waiting for sign-off. The instructions page shows the agent's instructions, read only. Views are switched by the URL hash.
+- `e2e/`: Playwright tests of the queue, the instructions and the claim page. They play the agent's part through the API, so they never call a model. Playwright starts its own backend on port 8001, with a fresh database in the system temp folder, and its own dashboard on port 5174, so it never touches the dev servers or their data.
 
 ## Running it
 

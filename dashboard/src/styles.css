@@ -63,6 +63,11 @@ h2 {
   font-size: 1.1rem;
 }
 
+h3 {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
 .mono {
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.9em;
@@ -361,4 +366,14 @@ tbody tr:nth-child(odd) {
 
 .step-error {
   background: color-mix(in srgb, var(--raspberry) 30%, transparent) !important;
+}
+
+.panel p {
+  margin: 0;
+}
+
+tfoot th,
+tfoot td {
+  font-weight: 600;
+  color: var(--ink);
 }

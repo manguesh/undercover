@@ -153,13 +153,13 @@ A handler can open a claim, run the agent, watch it work and sign off.
 
 Success criteria:
 
-- [ ] `npm run check:ts` passes with coverage at or above 80%, with tests for each part of the claim view and the sign-off flow.
-- [ ] `npm run e2e` passes, with tests that play the agent's part through the API:
-  - [ ] a claim shows its story, items and documents
-  - [ ] steps posted to a claim in progress appear in the view without a reload
-  - [ ] an approval of $1,250.00 shows as waiting for sign-off; signing off as Dana Whitfield moves it to decided with the payment shown, in both the claim view and the queue
-  - [ ] a decline shows its reasons and policy section
-- [ ] In the browser, through the Playwright MCP server: I open CLM-1001, see its full details, and take a screenshot of the claim view.
+- [x] `npm run check:ts` passes with coverage at or above 80%, with tests for each part of the claim view and the sign-off flow.
+- [x] `npm run e2e` passes, with tests that play the agent's part through the API:
+  - [x] a claim shows its story, items and documents
+  - [x] steps posted to a claim in progress appear in the view without a reload
+  - [x] an approval of $1,250.00 shows as waiting for sign-off; signing off as Dana Whitfield moves it to decided with the payment shown, in both the claim view and the queue
+  - [x] a decline shows its reasons and policy section
+- [x] In the browser, through the Playwright MCP server: I open CLM-1001, see its full details, and take a screenshot of the claim view.
 
 ## Phase 6: the pilot end to end
 
