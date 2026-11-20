@@ -40,6 +40,7 @@ Every operation has an `operation_id`, a one-line docstring and no optional inpu
 | `get_policy_wording` | `GET /api/policy-wording` | agent |
 | `get_instructions` | `GET /api/instructions` | agent, dashboard |
 | `list_handlers` | `GET /api/handlers` | dashboard |
+| `start_claim` | `POST /api/claims/{claim_id}/start` (added in Phase 2: takes a waiting claim and marks it in progress, so tests can play the agent's part) | `run_claim`, tests |
 | `record_decision` | `POST /api/claims/{claim_id}/decision` with decision, payout, reasons, policy section | agent |
 | `pay_claim` | `POST /api/claims/{claim_id}/payments` with the amount | agent |
 | `sign_off` | `POST /api/claims/{claim_id}/sign-off` with a handler id | dashboard |
@@ -95,14 +96,14 @@ The backend records decisions and enforces the rules.
 
 Success criteria:
 
-- [ ] `uv run pytest -q backend` passes, with tests for each rule:
-  - [ ] an approval of $420.00 moves the claim to `decided`, and paying $420.00 succeeds
-  - [ ] an approval of $1,250.00 moves the claim to `awaiting_signoff`, and paying $1,250.00 is refused with 403
-  - [ ] after a handler signs off, the claim is `decided` and has one payment of $1,250.00
-  - [ ] paying the wrong amount, paying twice, paying a declined claim and signing off a claim that isn't awaiting sign-off are each refused
-  - [ ] a decision on a claim that isn't `in_progress` is refused
-- [ ] Steps come back in order from `list_steps`.
-- [ ] `npm run check:python` passes with coverage at or above 80%.
+- [x] `uv run pytest -q backend` passes, with tests for each rule:
+  - [x] an approval of $420.00 moves the claim to `decided`, and paying $420.00 succeeds
+  - [x] an approval of $1,250.00 moves the claim to `awaiting_signoff`, and paying $1,250.00 is refused with 403
+  - [x] after a handler signs off, the claim is `decided` and has one payment of $1,250.00
+  - [x] paying the wrong amount, paying twice, paying a declined claim and signing off a claim that isn't awaiting sign-off are each refused
+  - [x] a decision on a claim that isn't `in_progress` is refused
+- [x] Steps come back in order from `list_steps`.
+- [x] `npm run check:python` passes with coverage at or above 80%.
 
 ## Phase 3: the UnderCover Agent
 
