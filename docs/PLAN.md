@@ -171,7 +171,7 @@ The whole pilot works together with a real model, and the docs are up to date.
 
 Success criteria:
 
-- [ ] Through the Playwright MCP server, with `npm run dev` running: I click "Run the agent" on CLM-1001, watch the steps appear as the agent works, and see its decision with reasons and a policy section. I'll take screenshots and report what the agent decided.
-- [ ] If any of those claims is approved over $1,000, I sign it off in the dashboard and check the payment appears; if none is, the Phase 5 end-to-end test already covers that path.
-- [ ] `docs/STATUS.md` describes the pilot as built and how to run it.
-- [ ] `npm run check` passes in full: ruff, pyright, pytest, Prettier, ESLint, tsc, vitest and Playwright.
+- [x] Through the Playwright MCP server, with `npm run dev` running: I click "Run the agent" on CLM-1001, watch the steps appear as the agent works, and see its decision with reasons and a policy section. I'll take screenshots and report what the agent decided.
+- [x] If any of those claims is approved over $1,000, I sign it off in the dashboard and check the payment appears; if none is, the Phase 5 end-to-end test already covers that path.
+- [x] `docs/STATUS.md` describes the pilot as built and how to run it.
+- [x] `npm run check` passes in full: ruff, pyright, pytest, Prettier, ESLint, tsc, vitest and Playwright.
