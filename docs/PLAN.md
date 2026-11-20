@@ -137,9 +137,9 @@ The handlers can see the queue and the agent's instructions, in UnderCover's bra
 
 Success criteria:
 
-- [ ] `npm run check:ts` passes: Prettier, ESLint, tsc (strict, no `any`) and vitest with coverage at or above 80%, with tests for the queue, the state chips, money formatting and the instructions view.
-- [ ] `npm run e2e` passes, with tests that the queue shows 25 claims all waiting and that the instructions view shows the instructions. Playwright runs its own backend on port 8001 with a fresh database.
-- [ ] In the browser, through the Playwright MCP server, with `npm run dev` running: the queue at `localhost:5173` shows the 25 claims in the brand's fonts and colors, and the instructions view shows the instructions. I'll take a screenshot of each in light and dark mode and check them against `docs/BRAND.md`.
+- [x] `npm run check:ts` passes: Prettier, ESLint, tsc (strict, no `any`) and vitest with coverage at or above 80%, with tests for the queue, the state chips, money formatting and the instructions view.
+- [x] `npm run e2e` passes, with tests that the queue shows 25 claims all waiting and that the instructions view shows the instructions. Playwright runs its own backend on port 8001 with a fresh database.
+- [x] In the browser, through the Playwright MCP server, with `npm run dev` running: the queue at `localhost:5173` shows the 25 claims in the brand's fonts and colors, and the instructions view shows the instructions. I'll take a screenshot of each in light and dark mode and check them against `docs/BRAND.md`.
 
 ## Phase 5: the claim view
 
