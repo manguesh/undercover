@@ -4,10 +4,12 @@ import json
 import sqlite3
 from collections.abc import Iterator
 from typing import Annotated, Any, Literal
+from uuid import uuid4
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from agent.main import run as run_agent
 from backend import db
 
 app = FastAPI(title="UnderCover")
@@ -299,3 +301,66 @@ def add_step(claim_id: str, body: Step, conn: Database) -> dict[str, Any]:
     ).fetchone()
     conn.commit()
     return dict(row)
+
+
+def take(claim_id: str) -> bool:
+    """Mark a waiting claim in progress, unless someone else has taken it."""
+    conn = db.connect()
+    taken = conn.execute(
+        "UPDATE claims SET status = 'in_progress'"
+        " WHERE claim_id = ? AND status = 'waiting'",
+        (claim_id,),
+    ).rowcount
+    conn.commit()
+    conn.close()
+    return bool(taken)
+
+
+def work_claim(claim_id: str) -> None:
+    """Run the agent on a claim in progress; put the claim back if it fails."""
+    try:
+        run_agent(claim_id, f"{claim_id}-{uuid4().hex[:8]}")
+        problem = "The agent finished without recording a decision."
+    except Exception as error:
+        problem = f"The agent stopped with an error: {error}"
+    conn = db.connect()
+    if status_of(conn, claim_id) == "in_progress":
+        conn.execute(
+            "INSERT INTO steps (claim_id, kind, text) VALUES (?, 'error', ?)",
+            (claim_id, problem),
+        )
+        conn.execute(
+            "UPDATE claims SET status = 'waiting' WHERE claim_id = ?", (claim_id,)
+        )
+        conn.commit()
+    conn.close()
+
+
+def work_queue(claim_ids: list[str]) -> None:
+    """Run the agent on each claim in turn."""
+    for claim_id in claim_ids:
+        if take(claim_id):
+            work_claim(claim_id)
+
+
+@app.post("/api/claims/{claim_id}/run", operation_id="run_claim")
+def run_claim(
+    claim_id: str, background: BackgroundTasks, conn: Database
+) -> dict[str, Any]:
+    """Start the UnderCover Agent on a waiting claim."""
+    claim = start_claim(claim_id, conn)
+    background.add_task(work_claim, claim_id)
+    return claim
+
+
+@app.post("/api/queue/run", operation_id="run_queue")
+def run_queue(background: BackgroundTasks, conn: Database) -> dict[str, int]:
+    """Start the UnderCover Agent on every waiting claim, one after another."""
+    claim_ids = [
+        row["claim_id"]
+        for row in conn.execute(
+            "SELECT claim_id FROM claims WHERE status = 'waiting' ORDER BY claim_id"
+        )
+    ]
+    background.add_task(work_queue, claim_ids)
+    return {"claims": len(claim_ids)}

@@ -116,14 +116,14 @@ The agent decides claims through the API, and the backend runs it.
 
 Success criteria:
 
-- [ ] `uv run pytest -q agent backend` passes. Tests use the stub model with scripted tool calls and a `TestClient` in place of HTTP:
-  - [ ] a scripted run on CLM-1001 reads the claim, records an approval of $420.00 and pays it; the claim is `decided` with a payment, and the steps show each tool call in order
-  - [ ] a scripted run that tries to pay $1,250.00 before sign-off gets the refusal back as a tool result, and no payment is recorded
-  - [ ] a run that raises, and a run that ends without a decision, each leave the claim `waiting` with an `error` step
-  - [ ] `run_claim` refuses a claim that isn't `waiting`
-- [ ] The agent's code reads no files: searching `agent/main.py` for `open(`, `Path` and `data/` finds nothing, so all its data comes from the API.
-- [ ] A live check, only if `OPENROUTER_API_KEY` is set (a few cents, or free with `MODEL_NAME=openrouter/free`): with `npm run dev:backend` running, `curl -X POST localhost:8000/api/claims/CLM-1001/run`, then `list_steps` shows the agent's tool calls and `get_claim` shows a decision with reasons and a policy section. I'll report the decision; whether it's right isn't checked here, since that needs the eval set.
-- [ ] `npm run check:python` passes with coverage at or above 80%.
+- [x] `uv run pytest -q agent backend` passes. Tests use the stub model with scripted tool calls and a `TestClient` in place of HTTP:
+  - [x] a scripted run on CLM-1001 reads the claim, records an approval of $420.00 and pays it; the claim is `decided` with a payment, and the steps show each tool call in order
+  - [x] a scripted run that tries to pay $1,250.00 before sign-off gets the refusal back as a tool result, and no payment is recorded
+  - [x] a run that raises, and a run that ends without a decision, each leave the claim `waiting` with an `error` step
+  - [x] `run_claim` refuses a claim that isn't `waiting`
+- [x] The agent's code reads no files: searching `agent/main.py` for `open(`, `Path` and `data/` finds nothing, so all its data comes from the API.
+- [x] A live check, only if `OPENROUTER_API_KEY` is set (a few cents, or free with `MODEL_NAME=openrouter/free`): with `npm run dev:backend` running, `curl -X POST localhost:8000/api/claims/CLM-1001/run`, then `list_steps` shows the agent's tool calls and `get_claim` shows a decision with reasons and a policy section. I'll report the decision; whether it's right isn't checked here, since that needs the eval set.
+- [x] `npm run check:python` passes with coverage at or above 80%.
 
 ## Phase 4: the dashboard shell, the queue and the instructions
 
